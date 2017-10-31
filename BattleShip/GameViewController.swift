@@ -74,8 +74,8 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         switch collectionView {
         case gridView:
-            collectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.red
             self.placeShip(square: indexPath.row)
+            collectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.red
             break
         case shipView:
             selectShip(square: indexPath.row, isSelected:true)
@@ -124,10 +124,10 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     self.gridView.cellForItem(at: IndexPath.init(row: i, section: 0))?.backgroundColor = UIColor.orange
                 }
                 self.placeShips[ship] = 2
+                self.gridView.reloadData()
                 break
             }
         }
-        self.gridView.reloadData()
     }
     
     
