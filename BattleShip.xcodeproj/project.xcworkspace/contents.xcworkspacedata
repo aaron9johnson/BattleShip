@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:../Square.swift">
+   </FileRef>
+   <FileRef
       location = "group:/Users/Nick/Desktop/Lighthouse/Bootcamp/Midterm Project/BattleShip/BattleShip/MPCHandler.swift">
    </FileRef>
    <FileRef
