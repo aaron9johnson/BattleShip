@@ -30,15 +30,25 @@ class ViewController: UIViewController, MCBrowserViewControllerDelegate {
             self.present(appDelegate.mpcHandler.browser, animated: true, completion: nil)
         }
     }
-    @IBAction func Button(_ sender: Any) {
-        self.sendMessage(square: [1])
+    @IBAction func start(_ sender: Any) {
+        if self.navigationItem.title == "Connected"{
+            self.sendMessage(message: true)
+            self.startGame()
+        } else {
+            let alert = UIAlertController(title: "No Opponent", message: "You must connect to an  opponent before starting a game", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.destructive, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        
     }
-    func sendMessage(square: Array<Int>){
-        let messageDict = ["square":square, "player":UIDevice.current.name] as [String : Any]
+    func sendMessage(message: Any){
+        let messageDict = ["message":message, "player":UIDevice.current.name] as [String : Any]
         let messageData = try! JSONSerialization.data(withJSONObject: messageDict, options: JSONSerialization.WritingOptions.prettyPrinted)
         try! appDelegate.mpcHandler.session.send(messageData, toPeers: appDelegate.mpcHandler.session.connectedPeers, with: MCSessionSendDataMode.reliable)
     }
-    
+    func startGame(){
+        self.performSegue(withIdentifier: "gameSegue", sender: nil)
+    }
     @objc func peerChangedStateWithNotification(notification:Notification){
         let userInfo = NSDictionary(dictionary: notification.userInfo!)
         let state = userInfo.object(forKey: "state") as! MCSessionState
@@ -50,20 +60,13 @@ class ViewController: UIViewController, MCBrowserViewControllerDelegate {
     @objc func handleReceivedDataWithNotification(notification:Notification){
         let userInfo = notification.userInfo! as Dictionary
         let recievedData:Data = userInfo["data"] as! Data
-        let message = try! JSONSerialization.jsonObject(with: recievedData, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
+        let messageDict = try! JSONSerialization.jsonObject(with: recievedData, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
+        let message:Any = messageDict.object(forKey: "message")!
+        if message is Bool{
+            self.startGame()
+        }
         let senderPeerId:MCPeerID = userInfo["peerID"] as! MCPeerID
         let senderDisplayName = senderPeerId.displayName
-        
-        let square:Array = message.object(forKey: "square") as! Array<Int>
-        if square.count == 1{
-            //opponent fired at square: square[0]
-        } else {
-            //board set up with opponent ships at positions: square[]
-        }
-        
-        let alert = UIAlertController(title: "Alert", message: "Sender: " + senderDisplayName, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "Click", style: UIAlertActionStyle.default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
     }
     
     func browserViewControllerDidFinish(_ browserViewController: MCBrowserViewController) {

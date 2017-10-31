@@ -17,17 +17,24 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w00-6Z-FFk">
-                                <rect key="frame" x="0.0" y="115" width="375" height="122"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w00-6Z-FFk">
+                                <rect key="frame" x="0.0" y="545" width="375" height="122"/>
                                 <color key="backgroundColor" red="0.0" green="1" blue="1" alpha="0.31478323060000002" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" title="Button"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="122" id="mrs-wV-UZ2"/>
+                                </constraints>
+                                <state key="normal" title="Start Game"/>
                                 <connections>
-                                    <action selector="Button:" destination="BYZ-38-t0r" eventType="touchUpInside" id="c0q-me-rNJ"/>
+                                    <action selector="start:" destination="BYZ-38-t0r" eventType="touchUpInside" id="nXn-Sd-4ef"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="w00-6Z-FFk" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="SOU-Rf-Ofm"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="w00-6Z-FFk" secondAttribute="trailing" id="iFZ-xK-YyB"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="w00-6Z-FFk" secondAttribute="bottom" id="vvk-Kl-VCs"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="swp-Jq-9a3">
@@ -37,18 +44,21 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="cD5-0M-8ly" kind="presentation" identifier="gameSegue" id="rZd-ba-7CP"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="380" y="38.23088455772114"/>
         </scene>
         <!--Game-->
-        <scene sceneID="u5m-SL-91g">
+        <scene sceneID="TcI-33-KT7">
             <objects>
-                <viewControllerPlaceholder storyboardName="Game" id="RNC-kV-aCQ" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="heb-8A-5kW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewControllerPlaceholder storyboardName="Game" id="cD5-0M-8ly" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="B4k-9Q-bjt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1049" y="7"/>
+            <point key="canvasLocation" x="1290" y="10"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="bFo-Yr-Gg9">
