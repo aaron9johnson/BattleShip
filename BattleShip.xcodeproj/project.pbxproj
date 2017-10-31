@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		01CA7DEE1FA81D8C007ADE69 /* MPCHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CA7DED1FA81D8C007ADE69 /* MPCHandler.swift */; };
 		933D709E1FA80FFB003D7083 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933D709D1FA80FFB003D7083 /* AppDelegate.swift */; };
 		933D70A01FA80FFB003D7083 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933D709F1FA80FFB003D7083 /* ViewController.swift */; };
 		933D70A31FA80FFB003D7083 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 933D70A11FA80FFB003D7083 /* Main.storyboard */; };
@@ -17,7 +16,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		01CA7DED1FA81D8C007ADE69 /* MPCHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MPCHandler.swift; path = "/Users/Nick/Desktop/Lighthouse/Bootcamp/Midterm Project/BattleShip/BattleShip/MPCHandler.swift"; sourceTree = "<absolute>"; };
 		933D709A1FA80FFB003D7083 /* BattleShip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BattleShip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		933D709D1FA80FFB003D7083 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		933D709F1FA80FFB003D7083 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -58,7 +56,6 @@
 		933D709C1FA80FFB003D7083 /* BattleShip */ = {
 			isa = PBXGroup;
 			children = (
-				01CA7DED1FA81D8C007ADE69 /* MPCHandler.swift */,
 				933D709D1FA80FFB003D7083 /* AppDelegate.swift */,
 				933D709F1FA80FFB003D7083 /* ViewController.swift */,
 				933D70A11FA80FFB003D7083 /* Main.storyboard */,
@@ -143,7 +140,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				933D70A01FA80FFB003D7083 /* ViewController.swift in Sources */,
-				01CA7DEE1FA81D8C007ADE69 /* MPCHandler.swift in Sources */,
 				933D709E1FA80FFB003D7083 /* AppDelegate.swift in Sources */,
 				933D70A61FA80FFB003D7083 /* BattleShip.xcdatamodeld in Sources */,
 			);

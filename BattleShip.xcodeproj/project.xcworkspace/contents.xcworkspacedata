@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/Nick/Desktop/Lighthouse/Bootcamp/Midterm Project/BattleShip/BattleShip/MPCHandler.swift">
-   </FileRef>
-   <FileRef
-      location = "self:">
+      location = "self:BattleShip.xcodeproj">
    </FileRef>
 </Workspace>
