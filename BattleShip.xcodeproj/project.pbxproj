@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		015511971FA8FF4C00C69B54 /* Game.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 015511961FA8FF4C00C69B54 /* Game.storyboard */; };
+		015511991FA9000300C69B54 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015511981FA9000300C69B54 /* GameViewController.swift */; };
+		0155119B1FA902A100C69B54 /* GameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0155119A1FA902A100C69B54 /* GameBoard.swift */; };
+		0155119D1FA902B300C69B54 /* Square.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0155119C1FA902B300C69B54 /* Square.swift */; };
+		015511A01FA9059A00C69B54 /* GridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0155119E1FA9059A00C69B54 /* GridCell.swift */; };
+		015511A11FA9059A00C69B54 /* GridCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0155119F1FA9059A00C69B54 /* GridCell.xib */; };
+		015511A31FA9069100C69B54 /* GridViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015511A21FA9069100C69B54 /* GridViewLayout.swift */; };
 		01CA7E3B1FA84401007ADE69 /* MPCHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CA7E3A1FA84401007ADE69 /* MPCHandler.swift */; };
 		933D709E1FA80FFB003D7083 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933D709D1FA80FFB003D7083 /* AppDelegate.swift */; };
 		933D70A01FA80FFB003D7083 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933D709F1FA80FFB003D7083 /* ViewController.swift */; };
@@ -17,6 +24,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		015511961FA8FF4C00C69B54 /* Game.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Game.storyboard; sourceTree = "<group>"; };
+		015511981FA9000300C69B54 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		0155119A1FA902A100C69B54 /* GameBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = "<group>"; };
+		0155119C1FA902B300C69B54 /* Square.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Square.swift; sourceTree = "<group>"; };
+		0155119E1FA9059A00C69B54 /* GridCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridCell.swift; sourceTree = "<group>"; };
+		0155119F1FA9059A00C69B54 /* GridCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GridCell.xib; sourceTree = "<group>"; };
+		015511A21FA9069100C69B54 /* GridViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridViewLayout.swift; sourceTree = "<group>"; };
 		01CA7E3A1FA84401007ADE69 /* MPCHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MPCHandler.swift; sourceTree = "<group>"; };
 		933D709A1FA80FFB003D7083 /* BattleShip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BattleShip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		933D709D1FA80FFB003D7083 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -61,7 +75,14 @@
 				933D709D1FA80FFB003D7083 /* AppDelegate.swift */,
 				933D709F1FA80FFB003D7083 /* ViewController.swift */,
 				01CA7E3A1FA84401007ADE69 /* MPCHandler.swift */,
+				015511A21FA9069100C69B54 /* GridViewLayout.swift */,
+				015511981FA9000300C69B54 /* GameViewController.swift */,
+				0155119A1FA902A100C69B54 /* GameBoard.swift */,
+				0155119E1FA9059A00C69B54 /* GridCell.swift */,
+				0155119F1FA9059A00C69B54 /* GridCell.xib */,
+				0155119C1FA902B300C69B54 /* Square.swift */,
 				933D70A11FA80FFB003D7083 /* Main.storyboard */,
+				015511961FA8FF4C00C69B54 /* Game.storyboard */,
 				933D70A71FA80FFB003D7083 /* Assets.xcassets */,
 				933D70A91FA80FFB003D7083 /* LaunchScreen.storyboard */,
 				933D70AC1FA80FFB003D7083 /* Info.plist */,
@@ -129,6 +150,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				015511971FA8FF4C00C69B54 /* Game.storyboard in Resources */,
+				015511A11FA9059A00C69B54 /* GridCell.xib in Resources */,
 				933D70AB1FA80FFB003D7083 /* LaunchScreen.storyboard in Resources */,
 				933D70A81FA80FFB003D7083 /* Assets.xcassets in Resources */,
 				933D70A31FA80FFB003D7083 /* Main.storyboard in Resources */,
@@ -142,10 +165,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				015511991FA9000300C69B54 /* GameViewController.swift in Sources */,
 				933D70A01FA80FFB003D7083 /* ViewController.swift in Sources */,
+				015511A31FA9069100C69B54 /* GridViewLayout.swift in Sources */,
 				01CA7E3B1FA84401007ADE69 /* MPCHandler.swift in Sources */,
+				0155119D1FA902B300C69B54 /* Square.swift in Sources */,
 				933D709E1FA80FFB003D7083 /* AppDelegate.swift in Sources */,
+				0155119B1FA902A100C69B54 /* GameBoard.swift in Sources */,
 				933D70A61FA80FFB003D7083 /* BattleShip.xcdatamodeld in Sources */,
+				015511A01FA9059A00C69B54 /* GridCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
