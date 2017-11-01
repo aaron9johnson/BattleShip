@@ -135,9 +135,12 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 alert = UIAlertController(title: "GAMEOVER", message: "You Loose :(", preferredStyle: UIAlertControllerStyle.alert)
             }
             
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            alert.addAction(UIAlertAction(title: "Leave Game", style: UIAlertActionStyle.default, handler: { _ in self.endGame()}))
             self.present(alert, animated: true, completion: nil)
         }
+    }
+    func endGame(){
+        self.dismiss(animated: true, completion: nil)
     }
     func sendMessage(message: Any){
         let messageDict = ["message":message, "player":UIDevice.current.name] as [String : Any]
