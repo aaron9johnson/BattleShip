@@ -4,6 +4,7 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -18,10 +19,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FV9-B5-O7h">
-                                <rect key="frame" x="0.0" y="617" width="375" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FV9-B5-O7h">
+                                <rect key="frame" x="0.0" y="607" width="375" height="60"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="0.1531690141" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="hYt-df-KzY"/>
+                                </constraints>
                                 <state key="normal" title="Button"/>
                                 <connections>
                                     <action selector="Shoot:" destination="lDp-Dq-L8R" eventType="touchUpInside" id="1VZ-b2-SPx"/>
@@ -56,7 +59,7 @@
                                 </connections>
                             </collectionView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="tJr-p6-nMd">
-                                <rect key="frame" x="0.0" y="403" width="375" height="206"/>
+                                <rect key="frame" x="0.0" y="403" width="375" height="204"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="AIA-BQ-H5r">
                                     <size key="itemSize" width="50" height="50"/>
@@ -82,11 +85,14 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="XeA-oh-W9D" firstAttribute="bottom" secondItem="tJr-p6-nMd" secondAttribute="bottom" constant="58" id="70f-dz-Eia"/>
+                            <constraint firstItem="FV9-B5-O7h" firstAttribute="trailing" secondItem="XeA-oh-W9D" secondAttribute="trailing" id="2MH-dT-BlP"/>
                             <constraint firstItem="zM3-c3-89T" firstAttribute="top" secondItem="XeA-oh-W9D" secondAttribute="top" id="Ckg-jS-q4u"/>
                             <constraint firstItem="tJr-p6-nMd" firstAttribute="top" secondItem="zM3-c3-89T" secondAttribute="bottom" constant="8" id="KmX-JT-Mbg"/>
                             <constraint firstItem="tJr-p6-nMd" firstAttribute="leading" secondItem="XeA-oh-W9D" secondAttribute="leading" id="QvU-ou-Rqr"/>
+                            <constraint firstItem="FV9-B5-O7h" firstAttribute="bottom" secondItem="XeA-oh-W9D" secondAttribute="bottom" id="ROg-hV-cF1"/>
+                            <constraint firstItem="FV9-B5-O7h" firstAttribute="leading" secondItem="XeA-oh-W9D" secondAttribute="leading" id="X33-gL-MV3"/>
                             <constraint firstItem="XeA-oh-W9D" firstAttribute="trailing" secondItem="zM3-c3-89T" secondAttribute="trailing" id="gMo-gS-imk"/>
+                            <constraint firstItem="FV9-B5-O7h" firstAttribute="top" secondItem="tJr-p6-nMd" secondAttribute="bottom" id="k9G-DE-pDA"/>
                             <constraint firstItem="XeA-oh-W9D" firstAttribute="trailing" secondItem="tJr-p6-nMd" secondAttribute="trailing" id="m0f-BR-B3T"/>
                             <constraint firstItem="zM3-c3-89T" firstAttribute="leading" secondItem="XeA-oh-W9D" secondAttribute="leading" id="xJu-i8-7ba"/>
                         </constraints>
