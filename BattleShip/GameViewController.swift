@@ -74,7 +74,6 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         self.gridView.register(UINib(nibName: "GridCell", bundle: nil), forCellWithReuseIdentifier: "gridCell")
         self.shipView.register(UINib(nibName: "GridCell", bundle: nil), forCellWithReuseIdentifier: "gridCell")
 
-        self.view.backgroundColor = UIColor.yellow
         // Do any additional setup after loading the view.
         gridView.allowsMultipleSelection = false
         
