@@ -86,6 +86,16 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.handleReceivedDataWithNotification(notification:)), name:NSNotification.Name("MPC_DidReceiveDataNotification"), object: nil)
         
+//        for num:Int in 0...19{
+//            shipView.cellForItem(at: IndexPath.init(row: num, section: 0))?.alpha = 0.50
+//        }
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        self.selectShip(square:0,isSelected:false)
+        self.selectShip(square:6,isSelected:false)
+        self.selectShip(square:10,isSelected:false)
+        self.selectShip(square:14,isSelected:false)
+        self.selectShip(square:18,isSelected:false)
     }
     
     @objc func handleReceivedDataWithNotification(notification:Notification){
@@ -426,9 +436,9 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
         for selectedSquares:Int in shipSquares{
             if isSelected {
-                shipView.cellForItem(at: IndexPath.init(row: selectedSquares, section: 0))?.backgroundColor = UIColor.red
+                shipView.cellForItem(at: IndexPath.init(row: selectedSquares, section: 0))?.alpha = 1.0
             } else {
-                shipView.cellForItem(at: IndexPath.init(row: selectedSquares, section: 0))?.backgroundColor = UIColor.lightGray
+                shipView.cellForItem(at: IndexPath.init(row: selectedSquares, section: 0))?.alpha = 0.50
             }
         }
         
