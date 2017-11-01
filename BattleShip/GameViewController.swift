@@ -74,12 +74,8 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         super.viewDidLoad()
         self.gridView.register(UINib(nibName: "GridCell", bundle: nil), forCellWithReuseIdentifier: "gridCell")
         self.shipView.register(UINib(nibName: "GridCell", bundle: nil), forCellWithReuseIdentifier: "gridCell")
-<<<<<<< Updated upstream
-
-=======
         
         self.view.backgroundColor = UIColor.yellow
->>>>>>> Stashed changes
         // Do any additional setup after loading the view.
         gridView.allowsMultipleSelection = false
         
@@ -146,13 +142,11 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             self.present(alert, animated: true, completion: nil)
         }
     }
-<<<<<<< Updated upstream
+
     func endGame(){
         self.dismiss(animated: true, completion: nil)
     }
-=======
-    
->>>>>>> Stashed changes
+
     func sendMessage(message: Any){
         let messageDict = ["message":message, "player":UIDevice.current.name] as [String : Any]
         let messageData = try! JSONSerialization.data(withJSONObject: messageDict, options: JSONSerialization.WritingOptions.prettyPrinted)
