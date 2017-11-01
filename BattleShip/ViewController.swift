@@ -23,7 +23,7 @@ class ViewController: UIViewController, MCBrowserViewControllerDelegate {
     }
     
     @IBAction func Connect(_ sender: Any) {
-        if appDelegate.mpcHandler.session != nil{
+        if appDelegate.mpcHandler.session != nil &&  !(self.navigationItem.title == "Connected"){
             appDelegate.mpcHandler.setupBrowser()
             appDelegate.mpcHandler.browser.delegate = self
             
