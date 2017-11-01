@@ -11,4 +11,6 @@ import UIKit
 struct Square {
     var hasShip: Bool = false
     var firedOn: Bool = false
+    var ship:Int = 0
+    var section:Int = 0
 }

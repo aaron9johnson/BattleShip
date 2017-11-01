@@ -30,10 +30,20 @@ class GameBoard: NSObject {
             return nil
         }
     }
+    func shipSectionStatus(shipNumber: Int, shipSection: Int) -> Bool{
+        for square:Square in boardArr{
+            if square.ship == shipNumber && square.section == shipSection{
+                return square.firedOn
+            }
+        }
+        return false
+    }
     
-    func addShip(atSquare: Int) {
+    func addShip(atSquare: Int, shipNumber: Int, shipSection: Int) {
         if validate(square: atSquare) {
             self.boardArr[atSquare].hasShip = true
+            self.boardArr[atSquare].ship = shipNumber
+            self.boardArr[atSquare].section = shipSection
         }
     }
     

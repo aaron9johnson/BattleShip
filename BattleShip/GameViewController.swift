@@ -51,6 +51,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     self.buttonOutlet.backgroundColor = UIColor.red
                 }
                 self.gridView.reloadData()
+                self.shipView.reloadData()
                 self.buttonOutlet.setTitle("Fire", for: UIControlState.normal)
             } else {
                 self.buttonOutlet.setTitle("Must place all ships first", for: UIControlState.normal)
@@ -95,12 +96,13 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             var board:Array<Int> = message as! Array<Int>
             receivedGameBoard = true
             for anything:Int in board {
-                self.opponentGameBoard.addShip(atSquare: anything)
+                self.opponentGameBoard.addShip(atSquare: anything, shipNumber: 0, shipSection: 0)
             }
         }
         if message is Int{
             var numFire:Int = message as! Int
             gameBoard.fireAt(square: numFire)
+            self.shipView.reloadData()
             gameState = gameStateEnum.playerTurn
             self.buttonOutlet.backgroundColor = UIColor.green
             self.winCheck()
@@ -150,7 +152,46 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             return 20
         }
     }
-    
+    func getShipAndSection(num:Int) -> (ship:Int, section:Int){
+        switch num{
+        case 0:
+            return (0,0)
+        case 1:
+            return (0,1)
+        case 2:
+            return (0,2)
+        case 3:
+            return (0,3)
+        case 4:
+            return (0,4)
+        case 6:
+            return (1,0)
+        case 7:
+            return (1,1)
+        case 8:
+            return (1,2)
+        case 9:
+            return (1,3)
+        case 10:
+            return (2,0)
+        case 11:
+            return (2,1)
+        case 12:
+            return (2,2)
+        case 14:
+            return (3,0)
+        case 15:
+            return (3,1)
+        case 16:
+            return (3,2)
+        case 18:
+            return (4,0)
+        case 19:
+            return (4,1)
+        default:
+            return (0,0)
+        }
+    }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         // cells for the ship view
@@ -161,7 +202,15 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 cell.backgroundColor = UIColor.clear
                 break
             default:
-                cell.backgroundColor = UIColor.lightGray
+                var shipAndSection = self.getShipAndSection(num: indexPath.row)
+                if gameBoard.shipSectionStatus(shipNumber: shipAndSection.ship, shipSection: shipAndSection.section){
+                    //ship section has been hit
+                    cell.backgroundColor = UIColor.red
+                    
+                } else {
+                    //ship section has not been hit
+                    cell.backgroundColor = UIColor.green
+                }
                 break
             }
             return cell
@@ -201,11 +250,6 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 cell.backgroundColor = UIColor.white
             }
         }
-        
-        
-        //
-        
-        
         
         return cell
     }
@@ -273,7 +317,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 }
                 
                 for i:Int in square...shipLength+square-1 {
-                    self.gameBoard.addShip(atSquare: i)
+                    self.gameBoard.addShip(atSquare: i, shipNumber: ship, shipSection: i - square)
                     self.gridView.cellForItem(at: IndexPath.init(row: i, section: 0))?.backgroundColor = UIColor.orange
                 }
                 self.placeShips[ship] = 2
