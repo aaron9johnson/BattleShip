@@ -8,6 +8,9 @@
 
 import UIKit
 import MultipeerConnectivity
+enum gameStateEnum{
+    case placement, playerTurn, opponentTurn, gameOver
+}
 
 class GameViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
@@ -19,22 +22,43 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var gameBoard:GameBoard = GameBoard()
     var opponentGameBoard:GameBoard = GameBoard()
     var appDelegate = UIApplication.shared.delegate as! AppDelegate
+    var gameState:gameStateEnum = gameStateEnum.placement
+    var receivedGameBoard = false
+    var fireAtSquare = 0
     
     @IBAction func Shoot(_ sender: Any) {
-        var flag:Bool = true
-        for ship:Int in self.placeShips{
-            if ship != 2{
-                flag = false
-            }
-        }
-        if flag{
-            var ships:Array<Int> = []
-            for allOfTheShips:Int in 0...99{
-                if self.gameBoard.status(forSquare: allOfTheShips)!.hasShip{
-                    ships.append(allOfTheShips)
+        if gameState == gameStateEnum.placement{
+            var flag:Bool = true
+            for ship:Int in self.placeShips{
+                if ship != 2{
+                    flag = false
                 }
             }
-            sendMessage(message: ships)
+            if flag{
+                var ships:Array<Int> = []
+                for allOfTheShips:Int in 0...99{
+                    if self.gameBoard.status(forSquare: allOfTheShips)!.hasShip{
+                        ships.append(allOfTheShips)
+                    }
+                }
+                sendMessage(message: ships)
+                if receivedGameBoard{
+                    gameState = gameStateEnum.playerTurn
+                } else {
+                    gameState = gameStateEnum.opponentTurn
+                }
+            }
+        }
+        if gameState == gameStateEnum.playerTurn{
+            
+            //shoot
+            if !opponentGameBoard.status(forSquare: fireAtSquare)!.firedOn{
+                sendMessage(message: fireAtSquare)
+                opponentGameBoard.fireAt(square: fireAtSquare)
+                gameState = gameStateEnum.opponentTurn
+                self.gridView.reloadData()
+                self.winCheck()
+            }
         }
     }
     override func viewDidLoad() {
@@ -61,12 +85,48 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         let messageDict = try! JSONSerialization.jsonObject(with: recievedData, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
         let message:Any = messageDict.object(forKey: "message")!
         if message is Array<Int>{
-            for anything:Int in message as! Array<Int>{
+            var board:Array<Int> = message as! Array<Int>
+            receivedGameBoard = true
+            for anything:Int in board {
                 self.opponentGameBoard.addShip(atSquare: anything)
             }
         }
         if message is Int{
+            var numFire:Int = message as! Int
+            gameBoard.fireAt(square: numFire)
+            gameState = gameStateEnum.playerTurn
+            self.winCheck()
             //oponent shot at
+        }
+    }
+    func winCheck(){
+        var playerWins:Bool = true
+        var opponentWins:Bool = true
+        for num:Int in 0...99{
+            if self.gameBoard.status(forSquare: num)!.hasShip{
+                if !self.gameBoard.status(forSquare: num)!.firedOn{
+                    opponentWins = false
+                }
+            }
+        }
+        for num:Int in 0...99{
+            if self.opponentGameBoard.status(forSquare: num)!.hasShip{
+                if !self.opponentGameBoard.status(forSquare: num)!.firedOn{
+                    playerWins = false
+                }
+            }
+        }
+        if playerWins || opponentWins{
+            gameState = gameStateEnum.gameOver
+            var alert:UIAlertController
+            if playerWins{
+                alert = UIAlertController(title: "GAMEOVER", message: "You Win!", preferredStyle: UIAlertControllerStyle.alert)
+            } else {
+                alert = UIAlertController(title: "GAMEOVER", message: "You Loose :(", preferredStyle: UIAlertControllerStyle.alert)
+            }
+            
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         }
     }
     func sendMessage(message: Any){
@@ -78,7 +138,6 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         switch collectionView {
         case gridView:
             return 100
-            break
         default:
             return 20
         }
@@ -101,15 +160,24 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
         
         //cells for the grid view
-        
         var cell:GridCell = collectionView.dequeueReusableCell(withReuseIdentifier: "gridCell", for: indexPath) as! GridCell
         cell.cellImageView.image = nil
-        if self.gameBoard.status(forSquare: indexPath.row)?.hasShip == true {
-            cell.backgroundColor = UIColor.orange
-        }
-        
-        else {
-            cell.backgroundColor = UIColor.white
+        if self.opponentGameBoard.status(forSquare: indexPath.row)!.hasShip{
+            if self.opponentGameBoard.status(forSquare: indexPath.row)!.firedOn{
+                //hit ship
+                cell.backgroundColor = UIColor.black
+            } else {
+                //unHit Opponent Ship
+                cell.backgroundColor = UIColor.white
+            }
+        } else {
+            if self.opponentGameBoard.status(forSquare: indexPath.row)!.firedOn{
+                //missed shot
+                cell.backgroundColor = UIColor.lightGray
+            } else {
+                //normal square
+                cell.backgroundColor = UIColor.white
+            }
         }
         return cell
     }
@@ -119,16 +187,22 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         switch collectionView {
         case gridView:
 
-            let cell:GridCell = collectionView.cellForItem(at: indexPath) as! GridCell
+            if gameState == gameStateEnum.placement{
+                self.placeShip(square: indexPath.row)
+            }
+            if gameState == gameStateEnum.playerTurn{
+                let cell:GridCell = collectionView.cellForItem(at: indexPath) as! GridCell
+                let myImage:UIImage = UIImage(named:"target")!
+                cell.cellImageView.image = myImage
+                fireAtSquare = indexPath.row
+            }
             
-            let myImage:UIImage = UIImage(named:"target")!
-            
-            cell.cellImageView.image = myImage
-            self.placeShip(square: indexPath.row)
-
             break
         case shipView:
-            selectShip(square: indexPath.row, isSelected:true)
+            if gameState == gameStateEnum.placement{
+                selectShip(square: indexPath.row, isSelected:true)
+            }
+            
             break
         default:
             break
