@@ -25,7 +25,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="hYt-df-KzY"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="Place Ships"/>
                                 <connections>
                                     <action selector="Shoot:" destination="lDp-Dq-L8R" eventType="touchUpInside" id="1VZ-b2-SPx"/>
                                 </connections>
@@ -99,6 +99,7 @@
                         <viewLayoutGuide key="safeArea" id="XeA-oh-W9D"/>
                     </view>
                     <connections>
+                        <outlet property="buttonOutlet" destination="FV9-B5-O7h" id="Q8t-S1-aW2"/>
                         <outlet property="gridView" destination="zM3-c3-89T" id="AyB-Yx-I2W"/>
                         <outlet property="shipView" destination="tJr-p6-nMd" id="wQk-sw-taM"/>
                     </connections>
