@@ -9,6 +9,10 @@
 import UIKit
 import MultipeerConnectivity
 
+enum gameStateEnum {
+    case placementPhase, playPhase, gameOver
+}
+
 class GameViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     @IBOutlet weak var shipView: UICollectionView!
@@ -19,24 +23,36 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var gameBoard:GameBoard = GameBoard()
     var opponentGameBoard:GameBoard = GameBoard()
     var appDelegate = UIApplication.shared.delegate as! AppDelegate
+    var gameState:gameStateEnum = gameStateEnum.placementPhase
+    var flag:Bool = false
+
     
     @IBAction func Shoot(_ sender: Any) {
-        var flag:Bool = true
-        for ship:Int in self.placeShips{
-            if ship != 2{
-                flag = false
-            }
-        }
-        if flag{
-            var ships:Array<Int> = []
-            for allOfTheShips:Int in 0...99{
-                if self.gameBoard.status(forSquare: allOfTheShips)!.hasShip{
-                    ships.append(allOfTheShips)
+        if gameState == gameStateEnum.placementPhase{
+            flag = true
+            for ship:Int in self.placeShips{
+                if ship != 2{
+                    flag = false
                 }
             }
-            sendMessage(message: ships)
+            if flag{
+                var ships:Array<Int> = []
+                for allOfTheShips:Int in 0...99{
+                    if self.gameBoard.status(forSquare: allOfTheShips)!.hasShip{
+                        ships.append(allOfTheShips)
+                    }
+                }
+                sendMessage(message: ships)
+            }
+            
+        }
+        else if gameState == gameStateEnum.playPhase && flag {
+            var targetCell:Array<IndexPath> = self.gridView.indexPathsForSelectedItems!
+            self.gameBoard.fireAt(square: targetCell[0].row);
+            self.gridView.reloadItems(at: targetCell)
         }
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -53,6 +69,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.handleReceivedDataWithNotification(notification:)), name:NSNotification.Name("MPC_DidReceiveDataNotification"), object: nil)
         
     }
+    
     @objc func handleReceivedDataWithNotification(notification:Notification){
         let userInfo = notification.userInfo! as Dictionary
         let recievedData:Data = userInfo["data"] as! Data
@@ -62,6 +79,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             for anything:Int in message as! Array<Int>{
                 self.opponentGameBoard.addShip(atSquare: anything)
             }
+            self.gameState = gameStateEnum.playPhase
         }
         if message is Int{
             //oponent shot at
@@ -104,7 +122,9 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         if self.gameBoard.status(forSquare: indexPath.row)?.hasShip == true {
             cell.backgroundColor = UIColor.orange
         }
-        
+        else if self.gameBoard.status(forSquare: indexPath.row)?.firedOn == true {
+            cell.backgroundColor = UIColor.red
+        }
         else {
             cell.backgroundColor = UIColor.white
         }
@@ -116,7 +136,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         switch collectionView {
         case gridView:
             self.placeShip(square: indexPath.row)
-            collectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.red
+            collectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.magenta
             break
         case shipView:
             selectShip(square: indexPath.row, isSelected:true)
