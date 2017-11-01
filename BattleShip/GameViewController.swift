@@ -69,11 +69,17 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             }
         }
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.gridView.register(UINib(nibName: "GridCell", bundle: nil), forCellWithReuseIdentifier: "gridCell")
         self.shipView.register(UINib(nibName: "GridCell", bundle: nil), forCellWithReuseIdentifier: "gridCell")
+<<<<<<< Updated upstream
 
+=======
+        
+        self.view.backgroundColor = UIColor.yellow
+>>>>>>> Stashed changes
         // Do any additional setup after loading the view.
         gridView.allowsMultipleSelection = false
         
@@ -86,6 +92,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.handleReceivedDataWithNotification(notification:)), name:NSNotification.Name("MPC_DidReceiveDataNotification"), object: nil)
         
     }
+    
     @objc func handleReceivedDataWithNotification(notification:Notification){
         let userInfo = notification.userInfo! as Dictionary
         let recievedData:Data = userInfo["data"] as! Data
@@ -108,6 +115,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             //oponent shot at
         }
     }
+    
     func winCheck(){
         var playerWins:Bool = true
         var opponentWins:Bool = true
@@ -138,14 +146,19 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             self.present(alert, animated: true, completion: nil)
         }
     }
+<<<<<<< Updated upstream
     func endGame(){
         self.dismiss(animated: true, completion: nil)
     }
+=======
+    
+>>>>>>> Stashed changes
     func sendMessage(message: Any){
         let messageDict = ["message":message, "player":UIDevice.current.name] as [String : Any]
         let messageData = try! JSONSerialization.data(withJSONObject: messageDict, options: JSONSerialization.WritingOptions.prettyPrinted)
         try! appDelegate.mpcHandler.session.send(messageData, toPeers: appDelegate.mpcHandler.session.connectedPeers, with: MCSessionSendDataMode.reliable)
     }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch collectionView {
         case gridView:
@@ -154,6 +167,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             return 20
         }
     }
+    
     func getShipAndSection(num:Int) -> (ship:Int, section:Int){
         switch num{
         case 0:
@@ -194,6 +208,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             return (0,0)
         }
     }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         // cells for the ship view
@@ -207,11 +222,21 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 var shipAndSection = self.getShipAndSection(num: indexPath.row)
                 if gameBoard.shipSectionStatus(shipNumber: shipAndSection.ship, shipSection: shipAndSection.section){
                     //ship section has been hit
-                    cell.backgroundColor = UIColor.red
+                    let shipNumber = self.opponentGameBoard.status(forSquare: indexPath.row)?.ship
+                    let sectionNumber = self.opponentGameBoard.status(forSquare: indexPath.row)?.section
+                    
+                    var shipImage:UIImage = self.imageForShipSection(ship: shipAndSection.ship, shipSection: shipAndSection.section, isHit: false)
+                    
+                    cell.cellImageView.image = shipImage
                     
                 } else {
                     //ship section has not been hit
-                    cell.backgroundColor = UIColor.green
+                    let shipNumber = self.opponentGameBoard.status(forSquare: indexPath.row)?.ship
+                    let sectionNumber = self.opponentGameBoard.status(forSquare: indexPath.row)?.section
+                    
+                    var shipImage:UIImage = self.imageForShipSection(ship: shipAndSection.ship, shipSection: shipAndSection.section, isHit: false)
+                    
+                    cell.cellImageView.image = shipImage
                 }
                 break
             }
@@ -225,10 +250,15 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         if gameState != gameStateEnum.placement{ //during placement
             
             cell.cellImageView.image = nil
-            if self.opponentGameBoard.status(forSquare: indexPath.row)!.hasShip{
+            if self.opponentGameBoard.status(forSquare: indexPath.row)!.hasShip {
                 if self.opponentGameBoard.status(forSquare: indexPath.row)!.firedOn{
                     //hit ship
-                    cell.backgroundColor = UIColor.black
+                    let shipNumber = self.opponentGameBoard.status(forSquare: indexPath.row)?.ship
+                    let sectionNumber = self.opponentGameBoard.status(forSquare: indexPath.row)?.section
+                    
+                    var shipImage:UIImage = self.imageForShipSection(ship: shipNumber!, shipSection: sectionNumber!, isHit: false)
+                    
+                    cell.cellImageView.image = shipImage
                 } else {
                     //unHit Opponent Ship
                     cell.backgroundColor = UIColor.white
@@ -260,7 +290,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         switch collectionView {
         case gridView:
-
+            
             if gameState == gameStateEnum.placement{
                 self.placeShip(square: indexPath.row)
             }
@@ -406,4 +436,26 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
         
     }
+    
+    func imageForShipSection(ship:Int, shipSection:Int, isHit:Bool) -> UIImage {
+        if shipSection == 0 {
+            return UIImage(named: "VShipBack")!
+        }
+        else if ship == 0 && shipSection == 4 ||
+            ship == 1 && shipSection == 3 ||
+            ship == 2 && shipSection == 2 ||
+            ship == 3 && shipSection == 2 ||
+            ship == 4 && shipSection == 1 {
+            return UIImage(named: "VShipFront")!
+        }
+        else {
+            return UIImage(named: "VShipMiddle")!
+        }
+        
+        
+        
+    }
+        
+        
+        
 }
