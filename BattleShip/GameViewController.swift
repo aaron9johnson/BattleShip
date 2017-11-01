@@ -39,7 +39,9 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.gridView.register(UINib(nibName: "GridCell", bundle: nil), forCellWithReuseIdentifier: "gridCell")
+        self.shipView.register(UINib(nibName: "GridCell", bundle: nil), forCellWithReuseIdentifier: "gridCell")
+
         self.view.backgroundColor = UIColor.yellow
         // Do any additional setup after loading the view.
         gridView.allowsMultipleSelection = false
@@ -86,7 +88,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         // cells for the ship view
         if collectionView == self.shipView{
-            var cell:GridCell = collectionView.dequeueReusableCell(withReuseIdentifier: "shipCell", for: indexPath) as! GridCell
+            var cell:GridCell = collectionView.dequeueReusableCell(withReuseIdentifier: "gridCell", for: indexPath) as! GridCell
             switch indexPath.row{
             case 5,13,17:
                 cell.backgroundColor = UIColor.clear
@@ -100,7 +102,8 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         //cells for the grid view
         
-        var cell:GridCell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! GridCell
+        var cell:GridCell = collectionView.dequeueReusableCell(withReuseIdentifier: "gridCell", for: indexPath) as! GridCell
+        cell.cellImageView.image = nil
         if self.gameBoard.status(forSquare: indexPath.row)?.hasShip == true {
             cell.backgroundColor = UIColor.orange
         }
@@ -115,8 +118,14 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         switch collectionView {
         case gridView:
+
+            let cell:GridCell = collectionView.cellForItem(at: indexPath) as! GridCell
+            
+            let myImage:UIImage = UIImage(named:"target")!
+            
+            cell.cellImageView.image = myImage
             self.placeShip(square: indexPath.row)
-            collectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.red
+
             break
         case shipView:
             selectShip(square: indexPath.row, isSelected:true)
@@ -129,7 +138,8 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         switch collectionView {
         case gridView:
-            collectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.white
+            let cell:GridCell = collectionView.cellForItem(at: indexPath) as! GridCell
+            cell.cellImageView.image = nil
             break
         case shipView:
             selectShip(square: indexPath.row, isSelected:false)
