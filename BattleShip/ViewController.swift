@@ -54,6 +54,15 @@ class ViewController: UIViewController, MCBrowserViewControllerDelegate {
         let state = userInfo.object(forKey: "state") as! MCSessionState
         if  state.rawValue == MCSessionState.connected.rawValue{
             self.navigationItem.title = "Connected"
+            if var topController = UIApplication.shared.keyWindow?.rootViewController {
+                while let presentedViewController = topController.presentedViewController {
+                    topController = presentedViewController
+                }
+                
+                if topController.isKind(of: MCBrowserViewController.self) {
+                    appDelegate.mpcHandler.browser.dismiss(animated: true, completion: nil)
+                }
+            }
         }
     }
     
