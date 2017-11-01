@@ -14,6 +14,7 @@ enum gameStateEnum{
 
 class GameViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
+    @IBOutlet weak var buttonOutlet: UIButton!
     @IBOutlet weak var shipView: UICollectionView!
     @IBOutlet weak var gridView: UICollectionView!
     var gridLayout:GridViewLayout = GridViewLayout()
@@ -44,18 +45,24 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 sendMessage(message: ships)
                 if receivedGameBoard{
                     gameState = gameStateEnum.playerTurn
+                    self.buttonOutlet.backgroundColor = UIColor.green
                 } else {
                     gameState = gameStateEnum.opponentTurn
+                    self.buttonOutlet.backgroundColor = UIColor.red
                 }
+                self.gridView.reloadData()
+                self.buttonOutlet.setTitle("Fire", for: UIControlState.normal)
+            } else {
+                self.buttonOutlet.setTitle("Must place all ships first", for: UIControlState.normal)
             }
-        }
-        if gameState == gameStateEnum.playerTurn{
+        } else if gameState == gameStateEnum.playerTurn{
             
             //shoot
             if !opponentGameBoard.status(forSquare: fireAtSquare)!.firedOn{
                 sendMessage(message: fireAtSquare)
                 opponentGameBoard.fireAt(square: fireAtSquare)
                 gameState = gameStateEnum.opponentTurn
+                self.buttonOutlet.backgroundColor = UIColor.red
                 self.gridView.reloadData()
                 self.winCheck()
             }
@@ -95,6 +102,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             var numFire:Int = message as! Int
             gameBoard.fireAt(square: numFire)
             gameState = gameStateEnum.playerTurn
+            self.buttonOutlet.backgroundColor = UIColor.green
             self.winCheck()
             //oponent shot at
         }
@@ -160,25 +168,45 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
         
         //cells for the grid view
+        
         var cell:GridCell = collectionView.dequeueReusableCell(withReuseIdentifier: "gridCell", for: indexPath) as! GridCell
-        cell.cellImageView.image = nil
-        if self.opponentGameBoard.status(forSquare: indexPath.row)!.hasShip{
-            if self.opponentGameBoard.status(forSquare: indexPath.row)!.firedOn{
-                //hit ship
-                cell.backgroundColor = UIColor.black
+        
+        if gameState != gameStateEnum.placement{ //during placement
+            
+            cell.cellImageView.image = nil
+            if self.opponentGameBoard.status(forSquare: indexPath.row)!.hasShip{
+                if self.opponentGameBoard.status(forSquare: indexPath.row)!.firedOn{
+                    //hit ship
+                    cell.backgroundColor = UIColor.black
+                } else {
+                    //unHit Opponent Ship
+                    cell.backgroundColor = UIColor.white
+                }
             } else {
-                //unHit Opponent Ship
-                cell.backgroundColor = UIColor.white
+                if self.opponentGameBoard.status(forSquare: indexPath.row)!.firedOn{
+                    //missed shot
+                    cell.backgroundColor = UIColor.lightGray
+                } else {
+                    //normal square
+                    cell.backgroundColor = UIColor.white
+                }
             }
-        } else {
-            if self.opponentGameBoard.status(forSquare: indexPath.row)!.firedOn{
-                //missed shot
-                cell.backgroundColor = UIColor.lightGray
-            } else {
-                //normal square
+        } else { //during gameplay
+            cell.cellImageView.image = nil
+            if self.gameBoard.status(forSquare: indexPath.row)?.hasShip == true {
+                cell.backgroundColor = UIColor.orange
+            }
+                
+            else {
                 cell.backgroundColor = UIColor.white
             }
         }
+        
+        
+        //
+        
+        
+        
         return cell
     }
     
