@@ -36,13 +36,21 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 }
             }
             if flag{
-                var ships:Array<Int> = []
+                var shipLocations:Array<Int> = []
+                var shipNumbers:Array<Int> = []
+                var shipSections:Array<Int> = []
                 for allOfTheShips:Int in 0...99{
                     if self.gameBoard.status(forSquare: allOfTheShips)!.hasShip{
-                        ships.append(allOfTheShips)
+                        shipLocations.append(allOfTheShips)
+                        shipSections.append(self.gameBoard.status(forSquare: allOfTheShips)!.section)
+                        shipNumbers.append(self.gameBoard.status(forSquare: allOfTheShips)!.ship)
                     }
                 }
-                sendMessage(message: ships)
+                var shipLocationsNumbersAndSections:Array<Array<Int>> = []
+                shipLocationsNumbersAndSections.append(shipLocations)
+                shipLocationsNumbersAndSections.append(shipNumbers)
+                shipLocationsNumbersAndSections.append(shipSections)
+                sendMessage(message: shipLocationsNumbersAndSections)
                 if receivedGameBoard{
                     gameState = gameStateEnum.playerTurn
                     self.buttonOutlet.backgroundColor = UIColor.green
@@ -103,11 +111,12 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         let recievedData:Data = userInfo["data"] as! Data
         let messageDict = try! JSONSerialization.jsonObject(with: recievedData, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
         let message:Any = messageDict.object(forKey: "message")!
-        if message is Array<Int>{
-            let board:Array<Int> = message as! Array<Int>
+        if message is Array<Array<Int>>{
+            var board:Array<Array<Int>> = message as! Array<Array<Int>>
+
             receivedGameBoard = true
-            for anything:Int in board {
-                self.opponentGameBoard.addShip(atSquare: anything, shipNumber: 0, shipSection: 0)
+            for i:Int in 0..<board[0].count {
+                self.opponentGameBoard.addShip(atSquare: board[0][i], shipNumber: board[1][i], shipSection: board[2][i])
             }
         }
         if message is Int{
