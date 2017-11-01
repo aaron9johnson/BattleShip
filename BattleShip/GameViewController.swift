@@ -75,7 +75,6 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         self.gridView.register(UINib(nibName: "GridCell", bundle: nil), forCellWithReuseIdentifier: "gridCell")
         self.shipView.register(UINib(nibName: "GridCell", bundle: nil), forCellWithReuseIdentifier: "gridCell")
         
-        self.view.backgroundColor = UIColor.yellow
         // Do any additional setup after loading the view.
         gridView.allowsMultipleSelection = false
         
@@ -211,6 +210,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             switch indexPath.row{
             case 5,13,17:
                 cell.backgroundColor = UIColor.clear
+                cell.cellImageView.image = nil
                 break
             default:
                 var shipAndSection = self.getShipAndSection(num: indexPath.row)
@@ -241,7 +241,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         var cell:GridCell = collectionView.dequeueReusableCell(withReuseIdentifier: "gridCell", for: indexPath) as! GridCell
         
-        if gameState != gameStateEnum.placement{ //during placement
+        if gameState != gameStateEnum.placement{ //during gameplay
             
             cell.cellImageView.image = nil
             if self.opponentGameBoard.status(forSquare: indexPath.row)!.hasShip {
@@ -266,13 +266,16 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     cell.backgroundColor = UIColor.white
                 }
             }
-        } else { //during gameplay
-            cell.cellImageView.image = nil
+        } else { //during placement
             if self.gameBoard.status(forSquare: indexPath.row)?.hasShip == true {
+                var ship:Square = self.gameBoard.status(forSquare: indexPath.row)!
+                var shipImage:UIImage = self.imageForShipSection(ship: ship.ship, shipSection: ship.section, isHit: false)
+                cell.cellImageView.image = shipImage
                 cell.backgroundColor = UIColor.orange
             }
                 
             else {
+                cell.cellImageView.image = nil
                 cell.backgroundColor = UIColor.white
             }
         }
@@ -344,7 +347,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 
                 for i:Int in square...shipLength+square-1 {
                     self.gameBoard.addShip(atSquare: i, shipNumber: ship, shipSection: i - square)
-                    self.gridView.cellForItem(at: IndexPath.init(row: i, section: 0))?.backgroundColor = UIColor.orange
+                    
                 }
                 self.placeShips[ship] = 2
                 self.gridView.reloadData()
