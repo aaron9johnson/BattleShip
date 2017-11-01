@@ -23,6 +23,9 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="0.1531690141" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="Shoot:" destination="lDp-Dq-L8R" eventType="touchUpInside" id="1VZ-b2-SPx"/>
+                                </connections>
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="zM3-c3-89T">
                                 <rect key="frame" x="0.0" y="20" width="375" height="375"/>

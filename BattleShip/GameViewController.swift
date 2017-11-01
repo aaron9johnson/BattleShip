@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MultipeerConnectivity
 
 class GameViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
@@ -16,7 +17,26 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var shipLayout:GridViewLayout = GridViewLayout()
     var placeShips:Array<Int> = [0,0,0,0,0]
     var gameBoard:GameBoard = GameBoard()
+    var opponentGameBoard:GameBoard = GameBoard()
+    var appDelegate = UIApplication.shared.delegate as! AppDelegate
     
+    @IBAction func Shoot(_ sender: Any) {
+        var flag:Bool = true
+        for ship:Int in self.placeShips{
+            if ship != 2{
+                flag = false
+            }
+        }
+        if flag{
+            var ships:Array<Int> = []
+            for allOfTheShips:Int in 0...99{
+                if self.gameBoard.status(forSquare: allOfTheShips)!.hasShip{
+                    ships.append(allOfTheShips)
+                }
+            }
+            sendMessage(message: ships)
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -30,6 +50,27 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         gridView.collectionViewLayout = gridLayout
         shipView.collectionViewLayout = shipLayout
         
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.handleReceivedDataWithNotification(notification:)), name:NSNotification.Name("MPC_DidReceiveDataNotification"), object: nil)
+        
+    }
+    @objc func handleReceivedDataWithNotification(notification:Notification){
+        let userInfo = notification.userInfo! as Dictionary
+        let recievedData:Data = userInfo["data"] as! Data
+        let messageDict = try! JSONSerialization.jsonObject(with: recievedData, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
+        let message:Any = messageDict.object(forKey: "message")!
+        if message is Array<Int>{
+            for anything:Int in message as! Array<Int>{
+                self.opponentGameBoard.addShip(atSquare: anything)
+            }
+        }
+        if message is Int{
+            //oponent shot at
+        }
+    }
+    func sendMessage(message: Any){
+        let messageDict = ["message":message, "player":UIDevice.current.name] as [String : Any]
+        let messageData = try! JSONSerialization.data(withJSONObject: messageDict, options: JSONSerialization.WritingOptions.prettyPrinted)
+        try! appDelegate.mpcHandler.session.send(messageData, toPeers: appDelegate.mpcHandler.session.connectedPeers, with: MCSessionSendDataMode.reliable)
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch collectionView {
