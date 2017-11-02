@@ -302,7 +302,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func endGame(){
-        self.dismiss(animated: true, completion: nil)
+        self.present(EpilogueViewController(), animated: true, completion:nil)
     }
     
     //
