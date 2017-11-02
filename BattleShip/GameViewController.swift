@@ -171,26 +171,27 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                         }
                     }
                     self.placeShips[ship] = 2
-                    self.gridView.reloadData()
-                    break
+                    
                 } else {
                     let alert = UIAlertController(title: "Invalid Placement", message: "Ship sections must be inbounds and not overlapped", preferredStyle: UIAlertControllerStyle.alert)
                     alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.destructive, handler: nil))
                     self.present(alert, animated: true, completion: nil)
                 }
+                break
             }
         }
+        self.gridView.reloadData()
     }
     func placementValidity(square:Int, shipLength:Int, shipRotation: Bool) -> Bool{
         for i:Int in 0..<shipLength {
             if shipRotation{
                 var gridRow:Int = square / 10
-                if gridRow + shipLength > 10 && self.gameBoard.status(forSquare: square + i * 10)!.hasShip {
+                if gridRow + shipLength > 10 || self.gameBoard.status(forSquare: square + i * 10)!.hasShip {
                     return false
                 }
             } else {
                 var gridColumn:Int = square % 10
-                if gridColumn + shipLength > 10 && self.gameBoard.status(forSquare: square + i)!.hasShip {
+                if gridColumn + shipLength > 10 || self.gameBoard.status(forSquare: square + i)!.hasShip {
                     return false
                 }
             }
@@ -296,7 +297,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             if playerWins{
                 alert = UIAlertController(title: "GAMEOVER", message: "You Win!", preferredStyle: UIAlertControllerStyle.alert)
             } else {
-                alert = UIAlertController(title: "GAMEOVER", message: "You Loose :(", preferredStyle: UIAlertControllerStyle.alert)
+                alert = UIAlertController(title: "GAMEOVER", message: "You Lose :(", preferredStyle: UIAlertControllerStyle.alert)
             }
             
             alert.addAction(UIAlertAction(title: "Leave Game", style: UIAlertActionStyle.default, handler: { _ in self.endGame()}))
@@ -408,7 +409,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             } else {
                 if self.opponentGameBoard.status(forSquare: indexPath.row)!.firedOn{
                     //missed shot
-                    cell.backgroundColor = UIColor.lightGray
+                    cell.backgroundColor = UIColor.purple
                 } else {
                     //normal square
                     cell.backgroundColor = UIColor.white
@@ -471,6 +472,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         case gridView:
             self.gridView.reloadItems(at: [indexPath])
             let cell:GridCell = collectionView.cellForItem(at: indexPath) as! GridCell
+            self.gridView.reloadData()
             break
         case shipView:
             selectShip(square: indexPath.row, isSelected:false)
