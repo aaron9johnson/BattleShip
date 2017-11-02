@@ -161,22 +161,42 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 default:
                     break
                 }
-                
-                for i:Int in 0..<shipLength {
-                    if isVertical{
-                        self.gameBoard.addShip(atSquare: square + i * 10, shipNumber: ship, shipSection: i, shipRotation: true)
-                        
-                    } else {
-                        self.gameBoard.addShip(atSquare: square + i, shipNumber: ship, shipSection: i, shipRotation: false)
+                if placementValidity(square:square, shipLength:shipLength, shipRotation: isVertical) {//valid placement
+                    for i:Int in 0..<shipLength {
+                        if isVertical{
+                            self.gameBoard.addShip(atSquare: square + i * 10, shipNumber: ship, shipSection: i, shipRotation: true)
+                            
+                        } else {
+                            self.gameBoard.addShip(atSquare: square + i, shipNumber: ship, shipSection: i, shipRotation: false)
+                        }
                     }
+                    self.placeShips[ship] = 2
+                    self.gridView.reloadData()
+                    break
+                } else {
+                    let alert = UIAlertController(title: "Invalid Placement", message: "Ship sections must be inbounds and not overlapped", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.destructive, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
                 }
-                self.placeShips[ship] = 2
-                self.gridView.reloadData()
-                break
             }
         }
     }
-    
+    func placementValidity(square:Int, shipLength:Int, shipRotation: Bool) -> Bool{
+        for i:Int in 0..<shipLength {
+            if shipRotation{
+                var gridRow:Int = square / 10
+                if gridRow + shipLength > 10 && self.gameBoard.status(forSquare: square + i * 10)!.hasShip {
+                    return false
+                }
+            } else {
+                var gridColumn:Int = square % 10
+                if gridColumn + shipLength > 10 && self.gameBoard.status(forSquare: square + i)!.hasShip {
+                    return false
+                }
+            }
+        }
+        return true
+    }
     func selectShip(square:Int,isSelected:Bool) -> Void {
         var shipSquares:Array<Int> = []
         switch square{
