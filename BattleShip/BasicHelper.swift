@@ -82,8 +82,4 @@ class BasicHelper: NSObject {
             return (0,0)
         }
     }
-    
-    
-    
-    
 }

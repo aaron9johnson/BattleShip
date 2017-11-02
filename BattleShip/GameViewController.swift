@@ -409,7 +409,8 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             } else {
                 if self.opponentGameBoard.status(forSquare: indexPath.row)!.firedOn{
                     //missed shot
-                    cell.backgroundColor = UIColor.purple
+                    cell.cellImageView.image = UIImage(named: "miss")
+                    cell.backgroundColor = UIColor.white
                 } else {
                     //normal square
                     cell.backgroundColor = UIColor.white
