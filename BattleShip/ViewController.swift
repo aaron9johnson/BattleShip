@@ -8,8 +8,10 @@
 
 import UIKit
 import MultipeerConnectivity
+import AVKit
 
 class ViewController: UIViewController, MCBrowserViewControllerDelegate {
+    @IBOutlet weak var battleShipGif: UIImageView!
     var appDelegate:AppDelegate!
     
     override func viewDidLoad() {
@@ -20,6 +22,21 @@ class ViewController: UIViewController, MCBrowserViewControllerDelegate {
         appDelegate.mpcHandler.advertiseSelf(advertise: true)
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.peerChangedStateWithNotification(notification:)), name:NSNotification.Name("MPC_DidChangeStateNotification"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.handleReceivedDataWithNotification(notification:)), name:NSNotification.Name("MPC_DidReceiveDataNotification"), object: nil)
+        self.video()
+    }
+    func video(){
+        //self.battleShipGif.image = UIImage.animatedImage(with: "Battle-", duration: 1.0)
+        var imgListArray :NSMutableArray = []
+        for countValue in 1...12{
+            
+            let strImageName : String = "Battle-\(countValue).png"
+            let image  = UIImage(named:strImageName)
+            imgListArray.add(image!)
+        }
+        
+        self.battleShipGif.animationImages = imgListArray as? [UIImage];
+        self.battleShipGif.animationDuration = 1.0
+        self.battleShipGif.startAnimating()
     }
     
     @IBAction func Connect(_ sender: Any) {
@@ -39,7 +56,6 @@ class ViewController: UIViewController, MCBrowserViewControllerDelegate {
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.destructive, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
-        
     }
     func sendMessage(message: Any){
         let messageDict = ["message":message, "player":UIDevice.current.name] as [String : Any]

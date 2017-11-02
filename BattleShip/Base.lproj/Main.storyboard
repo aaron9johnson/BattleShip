@@ -4,6 +4,7 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -23,16 +24,38 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="122" id="mrs-wV-UZ2"/>
                                 </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <state key="normal" title="Start Game"/>
                                 <connections>
                                     <action selector="start:" destination="BYZ-38-t0r" eventType="touchUpInside" id="nXn-Sd-4ef"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="m5n-Vt-B1s">
+                                <rect key="frame" x="0.0" y="64" width="375" height="481"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BattleShip" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t9y-Ve-Ndh">
+                                <rect key="frame" x="0.0" y="257" width="375" height="95"/>
+                                <color key="backgroundColor" red="1" green="0.9693393571759753" blue="0.96895078418027192" alpha="0.89505391725352113" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="95" id="rhZ-IA-gYc"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="black" pointSize="53"/>
+                                <nil key="textColor"/>
+                                <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <size key="shadowOffset" width="5" height="-5"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="t9y-Ve-Ndh" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="LT0-Fb-DCv"/>
                             <constraint firstItem="w00-6Z-FFk" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="SOU-Rf-Ofm"/>
+                            <constraint firstItem="t9y-Ve-Ndh" firstAttribute="centerY" secondItem="m5n-Vt-B1s" secondAttribute="centerY" id="hFE-Io-en9"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="w00-6Z-FFk" secondAttribute="trailing" id="iFZ-xK-YyB"/>
+                            <constraint firstItem="w00-6Z-FFk" firstAttribute="top" secondItem="m5n-Vt-B1s" secondAttribute="bottom" id="jLZ-FD-rYW"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="t9y-Ve-Ndh" secondAttribute="trailing" id="lgu-Gs-srr"/>
+                            <constraint firstItem="m5n-Vt-B1s" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="qBK-pM-F48"/>
+                            <constraint firstItem="m5n-Vt-B1s" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="rt2-nD-ijV"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="m5n-Vt-B1s" secondAttribute="trailing" id="vNn-f9-FiJ"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="w00-6Z-FFk" secondAttribute="bottom" id="vvk-Kl-VCs"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -45,6 +68,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="battleShipGif" destination="m5n-Vt-B1s" id="3kK-Io-ubq"/>
                         <segue destination="cD5-0M-8ly" kind="presentation" identifier="gameSegue" id="rZd-ba-7CP"/>
                     </connections>
                 </viewController>
