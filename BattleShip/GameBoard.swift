@@ -11,7 +11,9 @@ import UIKit
 class GameBoard: NSObject {
     
     var boardArr = Array<Square>(repeating: Square(), count: 100)
+    var shipArr = Array<ShipClass>()
     @objc dynamic var numHits: Int = 0
+    
     
     func fireAt(square: Int) {
         if validate(square: square) {

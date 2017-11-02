@@ -8,6 +8,10 @@
 
 import UIKit
 
+enum ShipOrientation {
+    case vertical, horizontal
+}
+
 struct Square {
     var hasShip: Bool = false
     var firedOn: Bool = false
