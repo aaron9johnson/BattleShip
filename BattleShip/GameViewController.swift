@@ -56,7 +56,6 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         shipView.collectionViewLayout = shipLayout
         
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.handleReceivedDataWithNotification(notification:)), name:NSNotification.Name("MPC_DidReceiveDataNotification"), object: nil)
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -165,13 +164,11 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     for i:Int in 0..<shipLength {
                         if isVertical{
                             self.gameBoard.addShip(atSquare: square + i * 10, shipNumber: ship, shipSection: i, shipRotation: true)
-                            
                         } else {
                             self.gameBoard.addShip(atSquare: square + i, shipNumber: ship, shipSection: i, shipRotation: false)
                         }
                     }
                     self.placeShips[ship] = 2
-                    
                 } else {
                     let alert = UIAlertController(title: "Invalid Placement", message: "Ship sections must be inbounds and not overlapped", preferredStyle: UIAlertControllerStyle.alert)
                     alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.destructive, handler: nil))
@@ -267,7 +264,6 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 shipView.cellForItem(at: IndexPath.init(row: selectedSquares, section: 0))?.alpha = 0.50
             }
         }
-        
     }
     
     //
@@ -363,6 +359,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 break
             default:
                 let shipAndSection = BasicHelper.getShipAndSection(num: indexPath.row)
+                
                 if gameBoard.shipSectionStatus(shipNumber: shipAndSection.ship, shipSection: shipAndSection.section){
                     //ship section has been hit
                     
@@ -372,8 +369,6 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     
                 } else {
                     //ship section has not been hit
-                    
-                    
                     let shipImage:UIImage = BasicHelper.getImageFor(ship: shipAndSection.ship, section: shipAndSection.section, orientation: ShipOrientation.horizontal, isHit: false)
                     
                     cell.cellImageView.image = shipImage
@@ -452,7 +447,6 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 cell.cellImageView.image = myImage
                 fireAtSquare = indexPath.row
             }
-            
             break
         case shipView:
             if gameState == gameStateEnum.placement{
@@ -461,7 +455,6 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     showRotation()
                 }
             }
-            
             break
         default:
             break
@@ -491,8 +484,4 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             return 20
         }
     }
-    
-    
-    
-    
 }

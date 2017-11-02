@@ -11,7 +11,6 @@ import UIKit
 class BasicHelper: NSObject {
 
     class func getImageFor(ship:Int, section:Int, orientation:ShipOrientation, isHit:Bool) -> UIImage {
-        
         var imageFilename:String = ""
         
         if orientation == ShipOrientation.horizontal {

@@ -15,7 +15,7 @@ enum ShipOrientation {
 struct Square {
     var hasShip: Bool = false
     var firedOn: Bool = false
-    var ship:Int = 0
-    var section:Int = 0
+    var ship:Int = -1
+    var section:Int = -1
     var isVertical:Bool = false
 }
