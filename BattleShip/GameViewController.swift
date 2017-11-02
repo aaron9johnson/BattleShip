@@ -35,6 +35,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var gameState:gameStateEnum = gameStateEnum.placement
     var receivedGameBoard = false
     var fireAtSquare = 0
+    var isVertical = false
     
     //
     // MARK: View Controller Lifecycle Methods
@@ -69,31 +70,39 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
     //
     // MARK: General Methods
     //
-    
+    func placementCheck() -> Bool{
+        for ship:Int in self.placeShips{
+            if ship != 2{
+                return false
+            }
+        }
+        return true
+    }
     @IBAction func Shoot(_ sender: Any) {
         if gameState == gameStateEnum.placement{
-            var flag:Bool = true
-            for ship:Int in self.placeShips{
-                if ship != 2{
-                    flag = false
-                }
-            }
-            if flag{
+            if placementCheck(){
                 var shipLocations:Array<Int> = []
                 var shipNumbers:Array<Int> = []
                 var shipSections:Array<Int> = []
+                var shipRotations:Array<Int> = []
                 for allOfTheShips:Int in 0...99{
                     if self.gameBoard.status(forSquare: allOfTheShips)!.hasShip{
                         shipLocations.append(allOfTheShips)
                         shipSections.append(self.gameBoard.status(forSquare: allOfTheShips)!.section)
                         shipNumbers.append(self.gameBoard.status(forSquare: allOfTheShips)!.ship)
+                        if self.gameBoard.status(forSquare: allOfTheShips)!.isVertical {
+                            shipRotations.append(1)
+                        } else {
+                            shipRotations.append(0)
+                        }
                     }
                 }
-                var shipLocationsNumbersAndSections:Array<Array<Int>> = []
-                shipLocationsNumbersAndSections.append(shipLocations)
-                shipLocationsNumbersAndSections.append(shipNumbers)
-                shipLocationsNumbersAndSections.append(shipSections)
-                sendMessage(message: shipLocationsNumbersAndSections)
+                var shipLocationsNumbersSectionsAndRotations:Array<Array<Int>> = []
+                shipLocationsNumbersSectionsAndRotations.append(shipLocations)
+                shipLocationsNumbersSectionsAndRotations.append(shipNumbers)
+                shipLocationsNumbersSectionsAndRotations.append(shipSections)
+                shipLocationsNumbersSectionsAndRotations.append(shipRotations)
+                sendMessage(message: shipLocationsNumbersSectionsAndRotations)
                 if receivedGameBoard{
                     gameState = gameStateEnum.playerTurn
                     self.buttonOutlet.backgroundColor = UIColor.green
@@ -105,7 +114,12 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 self.shipView.reloadData()
                 self.buttonOutlet.setTitle("Fire", for: UIControlState.normal)
             } else {
-                self.buttonOutlet.setTitle("Must place all ships first", for: UIControlState.normal)
+                if isVertical {
+                    isVertical = false
+                } else {
+                    isVertical = true
+                }
+                self.showRotation()
             }
         } else if gameState == gameStateEnum.playerTurn{
             
@@ -120,7 +134,13 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             }
         }
     }
-    
+    func showRotation(){
+        if isVertical {
+            self.buttonOutlet.setTitle("Vertical", for: UIControlState.normal)
+        } else {
+            self.buttonOutlet.setTitle("Horizontal", for: UIControlState.normal)
+        }
+    }
     func placeShip(square:Int) {
         var shipLength:Int = 0
         for ship:Int in 0...4 {
@@ -142,9 +162,13 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     break
                 }
                 
-                for i:Int in square...shipLength+square-1 {
-                    self.gameBoard.addShip(atSquare: i, shipNumber: ship, shipSection: i - square)
-                    
+                for i:Int in 0..<shipLength {
+                    if isVertical{
+                        self.gameBoard.addShip(atSquare: square + i * 10, shipNumber: ship, shipSection: i, shipRotation: true)
+                        
+                    } else {
+                        self.gameBoard.addShip(atSquare: square + i, shipNumber: ship, shipSection: i, shipRotation: false)
+                    }
                 }
                 self.placeShips[ship] = 2
                 self.gridView.reloadData()
@@ -278,7 +302,11 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             
             receivedGameBoard = true
             for i:Int in 0..<board[0].count {
-                self.opponentGameBoard.addShip(atSquare: board[0][i], shipNumber: board[1][i], shipSection: board[2][i])
+                var vert = false
+                if board[3][i] == 1{
+                    vert = true
+                }
+                self.opponentGameBoard.addShip(atSquare: board[0][i], shipNumber: board[1][i], shipSection: board[2][i], shipRotation: vert)
             }
         }
         if message is Int{
@@ -346,8 +374,11 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     //hit ship
                     let shipNumber = self.opponentGameBoard.status(forSquare: indexPath.row)?.ship
                     let sectionNumber = self.opponentGameBoard.status(forSquare: indexPath.row)?.section
-                    
-                    let shipImage:UIImage = BasicHelper.getImageFor(ship: shipNumber!, section: sectionNumber!, orientation: ShipOrientation.horizontal, isHit: true)
+                    var vert:ShipOrientation = ShipOrientation.horizontal
+                    if self.opponentGameBoard.status(forSquare: indexPath.row)!.isVertical{
+                        vert = ShipOrientation.vertical
+                    }
+                    let shipImage:UIImage = BasicHelper.getImageFor(ship: shipNumber!, section: sectionNumber!, orientation: vert, isHit: true)
                     
                     cell.cellImageView.image = shipImage
                 } else {
@@ -366,7 +397,11 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         } else { //during placement
             if self.gameBoard.status(forSquare: indexPath.row)?.hasShip == true {
                 let ship:Square = self.gameBoard.status(forSquare: indexPath.row)!
-                let shipImage:UIImage = BasicHelper.getImageFor(ship: ship.ship, section: ship.section, orientation: ShipOrientation.horizontal, isHit: false)
+                var vert:ShipOrientation = ShipOrientation.horizontal
+                if self.gameBoard.status(forSquare: indexPath.row)!.isVertical{
+                    vert = ShipOrientation.vertical
+                }
+                let shipImage:UIImage = BasicHelper.getImageFor(ship: ship.ship, section: ship.section, orientation: vert, isHit: false)
                 cell.cellImageView.image = shipImage
             }
             else {
@@ -377,7 +412,6 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         return cell
     }
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         switch collectionView {
@@ -385,6 +419,10 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             
             if gameState == gameStateEnum.placement{
                 self.placeShip(square: indexPath.row)
+                if placementCheck(){
+                    self.buttonOutlet.setTitle("Declare War", for: UIControlState.normal)
+                    self.buttonOutlet.backgroundColor = UIColor.black
+                }
             }
             if gameState == gameStateEnum.playerTurn{
                 let cell:GridCell = collectionView.cellForItem(at: indexPath) as! GridCell
@@ -397,6 +435,9 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         case shipView:
             if gameState == gameStateEnum.placement{
                 selectShip(square: indexPath.row, isSelected:true)
+                if !placementCheck() {
+                    showRotation()
+                }
             }
             
             break

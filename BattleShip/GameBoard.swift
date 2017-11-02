@@ -41,11 +41,12 @@ class GameBoard: NSObject {
         return false
     }
     
-    func addShip(atSquare: Int, shipNumber: Int, shipSection: Int) {
+    func addShip(atSquare: Int, shipNumber: Int, shipSection: Int, shipRotation: Bool) {
         if validate(square: atSquare) {
             self.boardArr[atSquare].hasShip = true
             self.boardArr[atSquare].ship = shipNumber
             self.boardArr[atSquare].section = shipSection
+            self.boardArr[atSquare].isVertical = shipRotation
         }
     }
     
