@@ -94,9 +94,6 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.handleReceivedDataWithNotification(notification:)), name:NSNotification.Name("MPC_DidReceiveDataNotification"), object: nil)
         
-        //        for num:Int in 0...19{
-        //            shipView.cellForItem(at: IndexPath.init(row: num, section: 0))?.alpha = 0.50
-        //        }
     }
     override func viewDidAppear(_ animated: Bool) {
         self.selectShip(square:0,isSelected:false)
@@ -266,7 +263,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     let shipNumber = self.opponentGameBoard.status(forSquare: indexPath.row)?.ship
                     let sectionNumber = self.opponentGameBoard.status(forSquare: indexPath.row)?.section
                     
-                    let shipImage:UIImage = self.imageForShipSection(ship: shipNumber!, shipSection: sectionNumber!, isHit: false)
+                    let shipImage:UIImage = self.imageForShipSection(ship: shipNumber!, shipSection: sectionNumber!, isHit: true)
                     
                     cell.cellImageView.image = shipImage
                 } else {
