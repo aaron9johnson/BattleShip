@@ -26,7 +26,7 @@ class ViewController: UIViewController, MCBrowserViewControllerDelegate {
     }
     func video(){
         //self.battleShipGif.image = UIImage.animatedImage(with: "Battle-", duration: 1.0)
-        var imgListArray :NSMutableArray = []
+        let imgListArray :NSMutableArray = []
         for countValue in 1...12{
             
             let strImageName : String = "Battle-\(countValue).png"
@@ -35,7 +35,7 @@ class ViewController: UIViewController, MCBrowserViewControllerDelegate {
         }
         
         self.battleShipGif.animationImages = imgListArray as? [UIImage];
-        self.battleShipGif.animationDuration = 1.0
+        self.battleShipGif.animationDuration = 1.5
         self.battleShipGif.startAnimating()
     }
     
