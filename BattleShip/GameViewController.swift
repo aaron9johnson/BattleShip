@@ -41,6 +41,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var fireAtSquare = 0
     var isVertical = false
     var audioPlayer:BattleShipAudio = BattleShipAudio()
+    var buttonFlashing:Bool = false
     
     
     //
@@ -118,6 +119,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 self.gridView.reloadData()
                 self.shipView.reloadData()
                 self.buttonOutlet.setTitle("Fire", for: UIControlState.normal)
+                self.stopFlashingbutton()
             } else {
                 if isVertical {
                     isVertical = false
@@ -297,7 +299,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             if self.opponentGameBoard.status(forSquare: num)!.hasShip && !(self.opponentGameBoard.status(forSquare: num)!.firedOn){
                 playerWins = false
                 print("\(num) \(self.opponentGameBoard.status(forSquare: num)!.hasShip) \(self.opponentGameBoard.status(forSquare: num)!.firedOn) \(playerWins)")
-
+                
             }
         }
         
@@ -459,6 +461,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 if placementCheck(){
                     self.buttonOutlet.setTitle("Declare War", for: UIControlState.normal)
                     self.buttonOutlet.backgroundColor = UIColor.black
+                    self.startFlashingbutton()
                 }
             }
             if gameState == gameStateEnum.playerTurn{
@@ -504,4 +507,32 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             return 20
         }
     }
+    
+    //
+    // MARK: Animation Methods
+    //
+    
+    func startFlashingbutton() {
+        if (buttonFlashing) {
+            return
+        }
+        buttonFlashing = true
+        self.buttonOutlet.alpha = 1.0
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: [UIViewAnimationOptions.curveEaseInOut, UIViewAnimationOptions.repeat, UIViewAnimationOptions.autoreverse, UIViewAnimationOptions.allowUserInteraction], animations: {
+            self.buttonOutlet.backgroundColor = UIColor.red
+        }, completion: nil)
+        
+    }
+    
+    func stopFlashingbutton() {
+        if (!buttonFlashing) {
+            return
+        }
+        self.buttonOutlet.layer.removeAllAnimations()
+        buttonFlashing = false
+    }
+    
+    
+    
+    
 }
