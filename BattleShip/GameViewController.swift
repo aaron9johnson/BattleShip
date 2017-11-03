@@ -32,10 +32,16 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var gameBoard:GameBoard = GameBoard()
     var opponentGameBoard:GameBoard = GameBoard()
     var appDelegate = UIApplication.shared.delegate as! AppDelegate
-    var gameState:gameStateEnum = gameStateEnum.placement
+    var gameState:gameStateEnum = gameStateEnum.placement {
+        didSet {
+            print("game state changed: geameState: \(gameState)")
+        }
+    }
     var receivedGameBoard = false
     var fireAtSquare = 0
     var isVertical = false
+    var audioPlayer:BattleShipAudio = BattleShipAudio()
+    
     
     //
     // MARK: View Controller Lifecycle Methods
@@ -126,6 +132,12 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             if !opponentGameBoard.status(forSquare: fireAtSquare)!.firedOn{
                 sendMessage(message: fireAtSquare)
                 opponentGameBoard.fireAt(square: fireAtSquare)
+                if (opponentGameBoard.status(forSquare: fireAtSquare)?.hasShip)! {
+                    audioPlayer.playSound(fileName: "hit", withExtension: "wav")
+                }
+                else {
+                    audioPlayer.playSound(fileName: "watershot", withExtension: "wav")
+                }
                 gameState = gameStateEnum.opponentTurn
                 self.buttonOutlet.backgroundColor = UIColor.red
                 self.gridView.reloadData()
@@ -273,26 +285,30 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
     func winCheck(){
         var playerWins:Bool = true
         var opponentWins:Bool = true
+        
         for num:Int in 0...99{
-            if self.gameBoard.status(forSquare: num)!.hasShip{
-                if !self.gameBoard.status(forSquare: num)!.firedOn{
-                    opponentWins = false
-                }
+            if self.gameBoard.status(forSquare: num)!.hasShip && !(self.gameBoard.status(forSquare: num)!.firedOn){
+                opponentWins = false
+                print("\(num) \(self.gameBoard.status(forSquare: num)!.hasShip) \(self.gameBoard.status(forSquare: num)!.firedOn) \(opponentWins)")
             }
         }
+        
         for num:Int in 0...99{
-            if self.opponentGameBoard.status(forSquare: num)!.hasShip{
-                if !self.opponentGameBoard.status(forSquare: num)!.firedOn{
-                    playerWins = false
-                }
+            if self.opponentGameBoard.status(forSquare: num)!.hasShip && !(self.opponentGameBoard.status(forSquare: num)!.firedOn){
+                playerWins = false
+                print("\(num) \(self.opponentGameBoard.status(forSquare: num)!.hasShip) \(self.opponentGameBoard.status(forSquare: num)!.firedOn) \(playerWins)")
+
             }
         }
+        
         if playerWins || opponentWins{
             gameState = gameStateEnum.gameOver
             var alert:UIAlertController
             if playerWins{
+                audioPlayer.playSound(fileName: "winner", withExtension: "wav")
                 alert = UIAlertController(title: "GAMEOVER", message: "You Win!", preferredStyle: UIAlertControllerStyle.alert)
             } else {
+                audioPlayer.playSound(fileName: "lose", withExtension: "wav")
                 alert = UIAlertController(title: "GAMEOVER", message: "You Lose :(", preferredStyle: UIAlertControllerStyle.alert)
             }
             
@@ -314,7 +330,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         let recievedData:Data = userInfo["data"] as! Data
         let messageDict = try! JSONSerialization.jsonObject(with: recievedData, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
         let message:Any = messageDict.object(forKey: "message")!
-        if message is Array<Array<Int>>{
+        if message is Array<Array<Int>> && !receivedGameBoard{
             var board:Array<Array<Int>> = message as! Array<Array<Int>>
             
             receivedGameBoard = true
@@ -326,9 +342,12 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 self.opponentGameBoard.addShip(atSquare: board[0][i], shipNumber: board[1][i], shipSection: board[2][i], shipRotation: vert)
             }
         }
-        if message is Int{
+        if message is Int && gameState == gameStateEnum.opponentTurn{
             let numFire:Int = message as! Int
             gameBoard.fireAt(square: numFire)
+            if (gameBoard.status(forSquare: numFire)?.hasShip)! {
+                audioPlayer.playSound(fileName: "hit", withExtension: "wav")
+            }
             self.shipView.reloadData()
             gameState = gameStateEnum.playerTurn
             self.buttonOutlet.backgroundColor = UIColor.green
@@ -336,6 +355,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             //oponent shot at
         }
     }
+    
     
     func sendMessage(message: Any){
         let messageDict = ["message":message, "player":UIDevice.current.name] as [String : Any]
