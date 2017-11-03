@@ -16,6 +16,7 @@
 		015511A31FA9069100C69B54 /* GridViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015511A21FA9069100C69B54 /* GridViewLayout.swift */; };
 		015511A51FAA9FE600C69B54 /* ShipClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015511A41FAA9FE600C69B54 /* ShipClass.swift */; };
 		015511A71FAAA47000C69B54 /* BasicHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015511A61FAAA47000C69B54 /* BasicHelper.swift */; };
+		01BD4D151FABEA0300A67DCD /* Sounds in Resources */ = {isa = PBXBuildFile; fileRef = 01BD4D141FABEA0300A67DCD /* Sounds */; };
 		01CA7E3B1FA84401007ADE69 /* MPCHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CA7E3A1FA84401007ADE69 /* MPCHandler.swift */; };
 		933D709E1FA80FFB003D7083 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933D709D1FA80FFB003D7083 /* AppDelegate.swift */; };
 		933D70A01FA80FFB003D7083 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933D709F1FA80FFB003D7083 /* ViewController.swift */; };
@@ -35,6 +36,7 @@
 		015511A21FA9069100C69B54 /* GridViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridViewLayout.swift; sourceTree = "<group>"; };
 		015511A41FAA9FE600C69B54 /* ShipClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShipClass.swift; sourceTree = "<group>"; };
 		015511A61FAAA47000C69B54 /* BasicHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicHelper.swift; sourceTree = "<group>"; };
+		01BD4D141FABEA0300A67DCD /* Sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sounds; sourceTree = "<group>"; };
 		01CA7E3A1FA84401007ADE69 /* MPCHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MPCHandler.swift; sourceTree = "<group>"; };
 		933D709A1FA80FFB003D7083 /* BattleShip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BattleShip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		933D709D1FA80FFB003D7083 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				933D709D1FA80FFB003D7083 /* AppDelegate.swift */,
+				01BD4D141FABEA0300A67DCD /* Sounds */,
 				933D709F1FA80FFB003D7083 /* ViewController.swift */,
 				01CA7E3A1FA84401007ADE69 /* MPCHandler.swift */,
 				015511A21FA9069100C69B54 /* GridViewLayout.swift */,
@@ -156,6 +159,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01BD4D151FABEA0300A67DCD /* Sounds in Resources */,
 				015511971FA8FF4C00C69B54 /* Game.storyboard in Resources */,
 				015511A11FA9059A00C69B54 /* GridCell.xib in Resources */,
 				933D70AB1FA80FFB003D7083 /* LaunchScreen.storyboard in Resources */,
